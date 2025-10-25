@@ -59,8 +59,16 @@ public class Playercontroller : MonoBehaviour
         HandleFlashlight();
         HandleHeadBob();
         CheckGrounded();
+        HandleInteraction();
     }
-    
+    void HandleInteraction()
+    {
+        // Press E to test for object in front of the player
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            testForObject();
+        }
+    }
     void HandleMovement()
     {
         if (isGrounded && moveDirection.y < 0)
@@ -168,12 +176,24 @@ public class Playercontroller : MonoBehaviour
             );
         }
     }
-    
+
     void CheckGrounded()
     {
-        Vector3 spherePosition = new Vector3(transform.position.x, 
-            transform.position.y - characterController.height/2 + 0.3f, 
+        Vector3 spherePosition = new Vector3(transform.position.x,
+            transform.position.y - characterController.height / 2 + 0.3f,
             transform.position.z);
         isGrounded = Physics.CheckSphere(spherePosition, 0.3f);
+    }
+    void testForObject()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            if (Physics.Raycast(ray, out RaycastHit hit, 3))
+            {
+                var target = hit.collider.GetComponent<horrorObjectHandler>();
+                if (target != null)
+                {
+                    target.vanish();
+                }
+            }
     }
 }

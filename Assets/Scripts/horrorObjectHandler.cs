@@ -14,7 +14,7 @@ public class horrorObjectHandler : MonoBehaviour
     // Private variables
     private Vector3 originalPosition;
     private float shakeTimer;
-    
+    private bool isVanishing;
     void Start()
     {
         // Store the original position
@@ -24,6 +24,14 @@ public class horrorObjectHandler : MonoBehaviour
     void Update()
     {
         HandleShaking();
+        if(isVanishing)
+        {
+            transform.localScale -= Vector3.one * 0.35f * Time.deltaTime;
+            if(transform.localScale.x <= 0.01f)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
     
     void HandleShaking()
@@ -83,5 +91,9 @@ public class horrorObjectHandler : MonoBehaviour
         shakeX = x;
         shakeY = y;
         shakeZ = z;
+    }
+    public void vanish()
+    {
+        isVanishing = true;
     }
 }
